@@ -1,0 +1,83 @@
+# Data Ingestion Pipeline Configuration
+
+# Folder Paths
+folders:
+  incoming: "${BASE_PATH}/datasets/incoming"
+  raw: "${BASE_PATH}/datasets/raw"
+  validated: "${BASE_PATH}/datasets/validated"
+  failed: "${BASE_PATH}/datasets/failed"
+  logs: "${BASE_PATH}/logs"
+
+# Database Configuration
+database:
+  type: "mongodb"  # Options: "mongodb", "sqlserver"
+  mongodb:
+    uri: "mongodb://localhost:27017"
+    database: "file_ingestion"
+    collection_metadata: "file_metadata"
+    collection_process_log: "process_logs"
+  
+  sqlserver:
+    server: "localhost"
+    database: "FileIngestion"
+    username: "sa"
+    password: "YourPassword123!"
+    driver: "ODBC Driver 17 for SQL Server"
+
+# Scheduler Configuration
+scheduler:
+  enabled: true
+  interval_minutes: 60
+  job_name: "ingest_files"
+  timezone: "UTC"
+
+# File Processing Configuration
+processing:
+  # Supported file extensions
+  csv_extensions: ['.csv']
+  image_extensions: ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff']
+  video_extensions: ['.mp4', '.avi', '.mov', '.mkv', '.flv', '.wmv', '.webm']
+  
+  # File size limits (in MB)
+  max_file_size_csv: 500
+  max_file_size_image: 100
+  max_file_size_video: 2000
+  
+  # Validation settings
+  validate_on_ingestion: true
+  extract_metadata: true
+  enable_deduplication: true
+  
+  # Retry settings
+  max_retries: 3
+  retry_delay_seconds: 5
+
+# CSV Processing Settings
+csv_settings:
+  encoding: "utf-8"
+  delimiter: ","
+  sample_size: 100
+
+# Image Processing Settings
+image_settings:
+  extract_dimensions: true
+  extract_format: true
+  extract_channels: true
+  compute_hash: true
+
+# Video Processing Settings
+video_settings:
+  extract_duration: true
+  extract_fps: true
+  extract_resolution: true
+  extract_codec: true
+  extract_bitrate: true
+  compute_hash: true
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  console_output: true
+  file_output: true
+  log_retention_days: 30
