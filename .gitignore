@@ -19,3 +19,4 @@ logs/
 *.flv
 *.wmv
 *.webm
+config\config.yaml
